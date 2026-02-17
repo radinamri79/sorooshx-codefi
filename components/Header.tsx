@@ -171,7 +171,7 @@ export default function Header() {
       {/* Scroll progress bar */}
       <motion.div
         style={{ scaleX, transformOrigin: "0%" }}
-        className="absolute bottom-0 left-40 right-40 h-[1px] bg-white"
+        className="absolute bottom-0 left-6 md:left-40 right-6 md:right-40 h-[1px] bg-white"
       />
     </header>
   );
