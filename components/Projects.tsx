@@ -1,7 +1,7 @@
 "use client";
 
 import { useRef } from "react";
-import { motion, useScroll, useTransform } from "framer-motion";
+import { motion, useScroll, useTransform, type MotionValue } from "framer-motion";
 
 interface Project {
   year: string;
@@ -56,69 +56,91 @@ const projects: Project[] = [
 ];
 
 const STICKY_TOP = 90;
+const CARD_COUNT = projects.length;
 
-function StickyCard({
+/* ─── Individual stacked card ─── */
+function StackedCard({
   project,
   index,
+  scrollYProgress,
 }: {
   project: Project;
   index: number;
+  scrollYProgress: MotionValue<number>;
 }) {
-  const cardRef = useRef<HTMLDivElement>(null);
-  const { scrollYProgress } = useScroll({
-    target: cardRef,
-    offset: ["start end", "end start"],
-  });
+  /*
+   * Scroll-linked slide animation:
+   *  - Card 0: always visible, no slide
+   *  - Card i (i≥1): slides up from below (translateY 100% → 0%)
+   *
+   * The section scroll is divided so each card gets a "reading" phase
+   * and a "slide-in" phase for the next card:
+   *   Card 1 slides in during scrollYProgress [0.167 → 0.333]
+   *   Card 2 slides in during scrollYProgress [0.500 → 0.667]
+   *   Card 3 slides in during scrollYProgress [0.833 → 1.000]
+   */
+  const sectionStart = index === 0 ? 0 : (index - 1) / (CARD_COUNT - 1);
+  const sectionEnd = index === 0 ? 0 : index / (CARD_COUNT - 1);
+  const animStart = index === 0 ? 0 : (sectionStart + sectionEnd) / 2;
+  const animEnd = index === 0 ? 0 : sectionEnd;
 
-  // Arrow: starts right (→), rotates to upper-right (↗) when card is fully in view
-  const arrowRotate = useTransform(scrollYProgress, [0.2, 0.45], [0, -45]);
+  const y = useTransform(
+    scrollYProgress,
+    index === 0 ? [0, 1] : [animStart, animEnd],
+    index === 0 ? ["0%", "0%"] : ["100%", "0%"]
+  );
+
+  /*
+   * Scale-down effect: when the NEXT card slides in, the current card
+   * scales down slightly (1 → 0.95) creating a depth/parallax feel.
+   * The last card never scales down.
+   */
+  const nextAnimStart =
+    index < CARD_COUNT - 1
+      ? ((index + index + 1) / (CARD_COUNT - 1)) / 2 // midpoint of next card's section
+      : 1;
+  const nextAnimEnd =
+    index < CARD_COUNT - 1 ? (index + 1) / (CARD_COUNT - 1) : 1;
+
+  const scale = useTransform(
+    scrollYProgress,
+    index < CARD_COUNT - 1 ? [nextAnimStart, nextAnimEnd] : [0, 1],
+    index < CARD_COUNT - 1 ? [1, 0.95] : [1, 1]
+  );
+
+  /* Arrow rotation: rotates from → to ↗ during the card's reading phase */
+  const arrowStart = index === 0 ? 0 : animEnd;
+  const arrowEnd = index === 0 ? 0.08 : Math.min(animEnd + 0.08, 1);
+  const arrowRotate = useTransform(scrollYProgress, [arrowStart, arrowEnd], [0, -45]);
 
   const textColor = project.darkText ? "#000000" : "#ffffff";
   const metaColor = project.darkText ? "rgba(0,0,0,0.6)" : "rgba(255,255,255,0.6)";
   const borderColor = project.darkText ? "rgba(0,0,0,0.15)" : "rgba(255,255,255,0.15)";
 
   return (
-    /* Each wrapper is 100vh — this provides the scroll distance needed */
-    <div
-      ref={cardRef}
-      style={{ height: "100vh" }}
+    <motion.div
+      className="absolute inset-0 rounded-2xl overflow-hidden shadow-2xl"
+      style={{ y, scale, zIndex: index + 1 }}
     >
-      {/* The sticky card itself — all cards stick at the SAME top position */}
-      <a
-        href={project.href}
-        className="sticky block no-underline group"
-        style={{
-          position: "sticky",
-          top: `${STICKY_TOP}px`,
-          zIndex: index + 1,
-        }}
-      >
+      <a href={project.href} className="block no-underline h-full">
         <div
-          className="rounded-2xl p-6 sm:p-8 md:p-10 lg:p-12 flex flex-col overflow-hidden shadow-2xl"
-          style={{
-            backgroundColor: project.mainBg,
-            height: `calc(100vh - ${STICKY_TOP + 24}px)`,
-          }}
+          className="h-full p-6 sm:p-8 md:p-10 lg:p-12 flex flex-col"
+          style={{ backgroundColor: project.mainBg }}
         >
           {/* Meta row: year + category */}
-          <div className="flex items-center justify-between pb-4 sm:pb-5"
+          <div
+            className="flex items-center justify-between pb-4 sm:pb-5"
             style={{ borderBottom: `1px solid ${borderColor}` }}
           >
             <span
               className="text-sm sm:text-base font-light tracking-wide"
-              style={{
-                fontFamily: "var(--font-body)",
-                color: metaColor,
-              }}
+              style={{ fontFamily: "var(--font-body)", color: metaColor }}
             >
               {project.year}
             </span>
             <span
               className="text-sm sm:text-base font-light tracking-wide"
-              style={{
-                fontFamily: "var(--font-body)",
-                color: metaColor,
-              }}
+              style={{ fontFamily: "var(--font-body)", color: metaColor }}
             >
               {project.category}
             </span>
@@ -128,18 +150,12 @@ function StickyCard({
           <div className="flex items-center justify-between pt-4 sm:pt-5 mb-5 sm:mb-6 md:mb-8">
             <h3
               className="text-3xl sm:text-4xl md:text-5xl lg:text-[56px] font-semibold tracking-tight leading-none"
-              style={{
-                fontFamily: "var(--font-heading)",
-                color: textColor,
-              }}
+              style={{ fontFamily: "var(--font-heading)", color: textColor }}
             >
               {project.title}
             </h3>
 
-            <motion.div
-              className="shrink-0 ml-4"
-              style={{ rotate: arrowRotate }}
-            >
+            <motion.div className="shrink-0 ml-4" style={{ rotate: arrowRotate }}>
               <svg
                 className="w-10 h-10 sm:w-11 sm:h-11 md:w-12 md:h-12"
                 viewBox="0 0 24 24"
@@ -159,10 +175,7 @@ function StickyCard({
           {/* Image area — fills remaining space */}
           <div
             className="flex-1 w-full rounded-lg sm:rounded-xl overflow-hidden flex items-center justify-center"
-            style={{
-              backgroundColor: project.imageBg,
-              minHeight: 0,
-            }}
+            style={{ backgroundColor: project.imageBg, minHeight: 0 }}
           >
             {project.image ? (
               <img
@@ -173,10 +186,7 @@ function StickyCard({
             ) : (
               <span
                 className="text-sm"
-                style={{
-                  fontFamily: "var(--font-body)",
-                  color: "rgba(0,0,0,0.12)",
-                }}
+                style={{ fontFamily: "var(--font-body)", color: "rgba(0,0,0,0.12)" }}
               >
                 {project.title}
               </span>
@@ -184,21 +194,46 @@ function StickyCard({
           </div>
         </div>
       </a>
-    </div>
+    </motion.div>
   );
 }
 
+/* ─── Projects section ─── */
 export default function Projects() {
+  const sectionRef = useRef<HTMLDivElement>(null);
+
+  const { scrollYProgress } = useScroll({
+    target: sectionRef,
+    offset: ["start start", "end end"],
+  });
+
   return (
-    <section id="projects" className="py-4 md:py-8">
-      <div className="mx-auto max-w-[1200px] px-4 sm:px-6 md:px-10">
-        {projects.map((project, i) => (
-          <StickyCard
-            key={project.title}
-            project={project}
-            index={i}
-          />
-        ))}
+    <section
+      id="projects"
+      ref={sectionRef}
+      style={{ height: `${CARD_COUNT * 100}vh` }}
+    >
+      <div className="mx-auto max-w-[1200px] px-4 sm:px-6 md:px-10 h-full">
+        {/* Sticky container — stays pinned as user scrolls through the tall section */}
+        <div
+          style={{
+            position: "sticky",
+            top: `${STICKY_TOP}px`,
+            height: `calc(100vh - ${STICKY_TOP + 24}px)`,
+          }}
+        >
+          {/* All cards stacked absolutely; z-index controls layering */}
+          <div className="relative w-full h-full">
+            {projects.map((project, i) => (
+              <StackedCard
+                key={project.title}
+                project={project}
+                index={i}
+                scrollYProgress={scrollYProgress}
+              />
+            ))}
+          </div>
+        </div>
       </div>
     </section>
   );
