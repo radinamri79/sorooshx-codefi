@@ -1,18 +1,21 @@
 "use client";
 
 import { useState, useEffect } from "react";
+import { usePathname } from "next/navigation";
+import Link from "next/link";
 import { motion, AnimatePresence, useScroll, useSpring } from "framer-motion";
 
 const navLinks = [
-  { label: "Projects", href: "#projects" },
-  { label: "Services", href: "#services" },
+  { label: "Projects", href: "/#projects" },
+  { label: "Services", href: "/#services" },
   { label: "Blog", href: "/blog" },
-  { label: "About", href: "#about" },
+  { label: "About", href: "/#about" },
 ];
 
 export default function Header() {
   const [menuOpen, setMenuOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
+  const pathname = usePathname();
   const { scrollYProgress } = useScroll();
   const scaleX = useSpring(scrollYProgress, { stiffness: 100, damping: 30, restDelta: 0.001 });
 
@@ -24,11 +27,13 @@ export default function Header() {
 
   const scrollTo = (href: string) => {
     setMenuOpen(false);
-    if (href.startsWith("#")) {
-      const el = document.querySelector(href);
-      el?.scrollIntoView({ behavior: "smooth" });
-    } else {
-      window.location.href = href;
+    if (href.startsWith("/#")) {
+      if (pathname !== "/") {
+        window.location.href = href;
+      } else {
+        const el = document.querySelector(href.slice(1));
+        el?.scrollIntoView({ behavior: "smooth" });
+      }
     }
   };
 
@@ -42,9 +47,9 @@ export default function Header() {
     >
       <div className="mx-auto flex h-[83px] max-w-[1200px] items-center justify-between px-4 sm:px-6 md:px-10">
         {/* Logo */}
-        <button
-          onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
-          className="flex items-center gap-0 border-none bg-transparent p-0 cursor-pointer"
+        <Link
+          href="/"
+          className="flex items-center gap-0 no-underline"
         >
           <span
             style={{ fontFamily: "var(--font-heading)" }}
@@ -53,38 +58,63 @@ export default function Header() {
             codefi
           </span>
           <span className="text-[#00FF77] text-[18px] font-semibold">.</span>
-        </button>
+        </Link>
 
         {/* Desktop nav */}
         <nav className="hidden md:flex items-center gap-9">
-          {navLinks.map((link) => (
-            <button
-              key={link.label}
-              onClick={() => scrollTo(link.href)}
-              className="border-none bg-transparent p-0 cursor-pointer"
-              style={{
-                fontFamily: "var(--font-body)",
-                fontSize: "16px",
-                fontWeight: 400,
-                color: "rgba(255,255,255,0.5)",
-                letterSpacing: "-0.4px",
-                lineHeight: "28px",
-                transition: "color 0.3s",
-              }}
-              onMouseEnter={(e) =>
-                (e.currentTarget.style.color = "#ffffff")
-              }
-              onMouseLeave={(e) =>
-                (e.currentTarget.style.color = "rgba(255,255,255,0.5)")
-              }
-            >
-              {link.label}
-            </button>
-          ))}
+          {navLinks.map((link) =>
+            link.href.startsWith("/#") ? (
+              <button
+                key={link.label}
+                onClick={() => scrollTo(link.href)}
+                className="border-none bg-transparent p-0 cursor-pointer"
+                style={{
+                  fontFamily: "var(--font-body)",
+                  fontSize: "16px",
+                  fontWeight: 400,
+                  color: "rgba(255,255,255,0.5)",
+                  letterSpacing: "-0.4px",
+                  lineHeight: "28px",
+                  transition: "color 0.3s",
+                }}
+                onMouseEnter={(e) =>
+                  (e.currentTarget.style.color = "#ffffff")
+                }
+                onMouseLeave={(e) =>
+                  (e.currentTarget.style.color = "rgba(255,255,255,0.5)")
+                }
+              >
+                {link.label}
+              </button>
+            ) : (
+              <Link
+                key={link.label}
+                href={link.href}
+                className="no-underline"
+                style={{
+                  fontFamily: "var(--font-body)",
+                  fontSize: "16px",
+                  fontWeight: 400,
+                  color: "rgba(255,255,255,0.5)",
+                  letterSpacing: "-0.4px",
+                  lineHeight: "28px",
+                  transition: "color 0.3s",
+                }}
+                onMouseEnter={(e) =>
+                  (e.currentTarget.style.color = "#ffffff")
+                }
+                onMouseLeave={(e) =>
+                  (e.currentTarget.style.color = "rgba(255,255,255,0.5)")
+                }
+              >
+                {link.label}
+              </Link>
+            )
+          )}
 
           {/* Contact CTA */}
           <button
-            onClick={() => scrollTo("#contact")}
+            onClick={() => scrollTo("/#contact")}
             className="border-none bg-transparent p-0 cursor-pointer"
             style={{
               fontFamily: "var(--font-body)",
@@ -139,24 +169,42 @@ export default function Header() {
             className="md:hidden bg-black/95 backdrop-blur-md border-b border-white/5 overflow-hidden"
           >
             <div className="flex flex-col gap-6 px-6 py-8">
-              {navLinks.map((link) => (
-                <button
-                  key={link.label}
-                  onClick={() => scrollTo(link.href)}
-                  className="border-none bg-transparent p-0 cursor-pointer text-left"
-                  style={{
-                    fontFamily: "var(--font-body)",
-                    fontSize: "24px",
-                    fontWeight: 400,
-                    color: "rgba(255,255,255,0.7)",
-                    letterSpacing: "-0.4px",
-                  }}
-                >
-                  {link.label}
-                </button>
-              ))}
+              {navLinks.map((link) =>
+                link.href.startsWith("/#") ? (
+                  <button
+                    key={link.label}
+                    onClick={() => scrollTo(link.href)}
+                    className="border-none bg-transparent p-0 cursor-pointer text-left"
+                    style={{
+                      fontFamily: "var(--font-body)",
+                      fontSize: "24px",
+                      fontWeight: 400,
+                      color: "rgba(255,255,255,0.7)",
+                      letterSpacing: "-0.4px",
+                    }}
+                  >
+                    {link.label}
+                  </button>
+                ) : (
+                  <Link
+                    key={link.label}
+                    href={link.href}
+                    onClick={() => setMenuOpen(false)}
+                    className="no-underline"
+                    style={{
+                      fontFamily: "var(--font-body)",
+                      fontSize: "24px",
+                      fontWeight: 400,
+                      color: "rgba(255,255,255,0.7)",
+                      letterSpacing: "-0.4px",
+                    }}
+                  >
+                    {link.label}
+                  </Link>
+                )
+              )}
               <button
-                onClick={() => scrollTo("#contact")}
+                onClick={() => scrollTo("/#contact")}
                 className="border-none bg-transparent p-0 cursor-pointer text-left"
                 style={{
                   fontFamily: "var(--font-body)",
