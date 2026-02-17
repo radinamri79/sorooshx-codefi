@@ -1,18 +1,19 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { motion, AnimatePresence } from "framer-motion";
+import { motion, AnimatePresence, useScroll, useSpring } from "framer-motion";
 
 const navLinks = [
-  { label: "projects", href: "#projects" },
-  { label: "about", href: "#about" },
-  { label: "notes", href: "#notes" },
-  { label: "contact", href: "#contact" },
+  { label: "Projects", href: "#projects" },
+  { label: "Services", href: "#services" },
+  { label: "About", href: "#about" },
 ];
 
 export default function Header() {
   const [menuOpen, setMenuOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
+  const { scrollYProgress } = useScroll();
+  const scaleX = useSpring(scrollYProgress, { stiffness: 100, damping: 30, restDelta: 0.001 });
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 40);
@@ -30,7 +31,7 @@ export default function Header() {
     <header
       className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
         scrolled
-          ? "bg-black/80 backdrop-blur-md border-b border-white/5"
+          ? "bg-black/10 backdrop-blur-xs"
           : "bg-transparent"
       }`}
     >
@@ -57,7 +58,7 @@ export default function Header() {
               onClick={() => scrollTo(link.href)}
               className="border-none bg-transparent p-0 cursor-pointer"
               style={{
-                fontFamily: "var(--font-heading)",
+                fontFamily: "var(--font-body)",
                 fontSize: "16px",
                 fontWeight: 400,
                 color: "rgba(255,255,255,0.5)",
@@ -81,16 +82,17 @@ export default function Header() {
             onClick={() => scrollTo("#contact")}
             className="border-none bg-transparent p-0 cursor-pointer"
             style={{
-              fontFamily: "var(--font-heading)",
+              fontFamily: "var(--font-body)",
               fontSize: "16px",
               fontWeight: 400,
               color: "#00FF77",
               letterSpacing: "-0.4px",
               lineHeight: "28px",
-              transition: "opacity 0.3s",
+              transition: "text-decoration 0.3s",
+              textDecoration: "none",
             }}
-            onMouseEnter={(e) => (e.currentTarget.style.opacity = "0.7")}
-            onMouseLeave={(e) => (e.currentTarget.style.opacity = "1")}
+            onMouseEnter={(e) => (e.currentTarget.style.textDecoration = "underline")}
+            onMouseLeave={(e) => (e.currentTarget.style.textDecoration = "none")}
           >
             Contact
           </button>
@@ -138,7 +140,7 @@ export default function Header() {
                   onClick={() => scrollTo(link.href)}
                   className="border-none bg-transparent p-0 cursor-pointer text-left"
                   style={{
-                    fontFamily: "var(--font-heading)",
+                    fontFamily: "var(--font-body)",
                     fontSize: "24px",
                     fontWeight: 400,
                     color: "rgba(255,255,255,0.7)",
@@ -152,10 +154,10 @@ export default function Header() {
                 onClick={() => scrollTo("#contact")}
                 className="border-none bg-transparent p-0 cursor-pointer text-left"
                 style={{
-                  fontFamily: "var(--font-heading)",
+                  fontFamily: "var(--font-body)",
                   fontSize: "24px",
                   fontWeight: 400,
-                  color: "#00FF77",
+                  color: "#FF6200",
                   letterSpacing: "-0.4px",
                 }}
               >
@@ -165,6 +167,12 @@ export default function Header() {
           </motion.nav>
         )}
       </AnimatePresence>
+
+      {/* Scroll progress bar */}
+      <motion.div
+        style={{ scaleX, transformOrigin: "0%" }}
+        className="absolute bottom-0 left-0 right-0 h-[1px] bg-[#00FF77]"
+      />
     </header>
   );
 }

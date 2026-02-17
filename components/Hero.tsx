@@ -3,7 +3,7 @@
 import { useEffect, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 
-const heroWords = ["interactive experiences", "no-code websites"];
+const heroWords = ["software development", "web3 dapps,mobile apps"];
 
 export default function Hero() {
   const [wordIndex, setWordIndex] = useState(0);
@@ -16,39 +16,19 @@ export default function Hero() {
   }, []);
 
   return (
-    <section className="relative min-h-screen flex items-center pt-[83px]">
-      <div className="mx-auto w-full max-w-[1200px] px-6 md:px-10 py-20 md:py-32">
-        {/* Availability badge */}
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6, delay: 0.2 }}
-          className="mb-10"
-        >
-          <span
-            className="inline-flex items-center gap-2 rounded-full border border-white/10 px-4 py-2"
-            style={{
-              fontFamily: "var(--font-body)",
-              fontSize: "12px",
-              color: "rgba(255,255,255,0.5)",
-            }}
-          >
-            <span className="h-2 w-2 rounded-full bg-[#00FF77] animate-pulse" />
-            available for new projects
-          </span>
-        </motion.div>
-
+    <section className="relative flex items-end pt-[83px] pb-4">
+      <div className="mx-auto w-full max-w-[1200px] px-6 md:px-10 py-12 md:py-20">
         {/* Main headline */}
         <motion.h1
           initial={{ opacity: 0, y: 30 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8, delay: 0.3 }}
           style={{
-            fontFamily: "var(--font-heading)",
-            fontSize: "clamp(36px, 6vw, 72px)",
-            fontWeight: 600,
-            lineHeight: 1.1,
-            letterSpacing: "-1.5px",
+            fontFamily: "var(--font-body)",
+            fontSize: "clamp(32px, 5vw, 56px)",
+            fontWeight: 400,
+            lineHeight: 1.3,
+            letterSpacing: "-0.5px",
             color: "#ffffff",
           }}
           className="max-w-[900px]"
@@ -58,9 +38,9 @@ export default function Hero() {
           partner with focus on
         </motion.h1>
 
-        {/* Animated words */}
+        {/* Animated words - orange */}
         <div
-          className="mt-2 overflow-hidden"
+          className="mt-1 overflow-hidden"
           style={{ height: "clamp(44px, 7vw, 80px)" }}
         >
           <AnimatePresence mode="wait">
@@ -71,12 +51,12 @@ export default function Hero() {
               exit={{ y: -60, opacity: 0 }}
               transition={{ duration: 0.5, ease: "easeInOut" }}
               style={{
-                fontFamily: "var(--font-heading)",
-                fontSize: "clamp(36px, 6vw, 72px)",
-                fontWeight: 600,
-                lineHeight: 1.1,
-                letterSpacing: "-1.5px",
-                color: "#00FF77",
+                fontFamily: "var(--font-body)",
+                fontSize: "clamp(32px, 5vw, 56px)",
+                fontWeight: 400,
+                lineHeight: 1.3,
+                letterSpacing: "-0.5px",
+                color: "#FF6200",
                 display: "block",
               }}
             >
@@ -84,6 +64,43 @@ export default function Hero() {
             </motion.span>
           </AnimatePresence>
         </div>
+
+        {/* Book an appointment button */}
+        <motion.a
+          href="#contact"
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.6, delay: 0.6 }}
+          className="inline-flex items-center justify-center mt-12"
+          style={{
+            fontFamily: "var(--font-body)",
+            fontSize: "16px",
+            fontWeight: 400,
+            height: "52px",
+            padding: "16px 36px",
+            border: "1px solid rgba(255,255,255,0.5)",
+            borderRadius: "4px",
+            backgroundColor: "transparent",
+            color: "#ffffff",
+            textDecoration: "none",
+            letterSpacing: "0px",
+            transition: "all 0.3s",
+          }}
+          onMouseEnter={(e) => {
+            e.currentTarget.style.backgroundColor = "#ffffff";
+            e.currentTarget.style.color = "#000000";
+          }}
+          onMouseLeave={(e) => {
+            e.currentTarget.style.backgroundColor = "transparent";
+            e.currentTarget.style.color = "#ffffff";
+          }}
+          onClick={(e) => {
+            e.preventDefault();
+            document.querySelector("#contact")?.scrollIntoView({ behavior: "smooth" });
+          }}
+        >
+          book an appointment
+        </motion.a>
       </div>
     </section>
   );

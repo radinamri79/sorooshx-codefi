@@ -7,85 +7,58 @@ export default function CTA() {
   const { ref, inView } = useInView({ threshold: 0.2, triggerOnce: true });
 
   return (
-    <section id="contact" className="py-20 md:py-32">
-      <div ref={ref} className="mx-auto max-w-[1200px] px-6 md:px-10">
-        {/* Section label */}
-        <motion.span
-          initial={{ opacity: 0, y: 20 }}
-          animate={inView ? { opacity: 1, y: 0 } : {}}
-          transition={{ duration: 0.5 }}
-          style={{
-            fontFamily: "var(--font-body)",
-            fontSize: "12px",
-            fontWeight: 300,
-            color: "rgba(255,255,255,0.5)",
-          }}
-        >
-          .say hello
-        </motion.span>
-
+    <section id="contact" className="py-16 md:py-28">
+      <div
+        ref={ref}
+        className="mx-auto max-w-[1200px] px-6 md:px-10 flex flex-col items-center text-center"
+      >
         {/* Headline */}
         <motion.h2
           initial={{ opacity: 0, y: 40 }}
           animate={inView ? { opacity: 1, y: 0 } : {}}
-          transition={{ duration: 0.7, delay: 0.15 }}
-          className="mt-8 max-w-[700px]"
+          transition={{ duration: 0.7 }}
           style={{
-            fontFamily: "var(--font-heading)",
-            fontSize: "clamp(24px, 4vw, 40px)",
-            fontWeight: 500,
-            lineHeight: 1.3,
-            letterSpacing: "-0.5px",
-            color: "rgba(255,255,255,0.85)",
+            fontFamily: "var(--font-body)",
+            fontSize: "clamp(28px, 5vw, 52px)",
+            fontWeight: 400,
+            lineHeight: 1.2,
+            color: "#00FF77",
           }}
         >
-          i&apos;m open for freelance projects, feel free to{" "}
-          <a
-            href="mailto:hello@codefi.dev"
-            style={{
-              color: "#00FF77",
-              textDecoration: "none",
-              transition: "opacity 0.3s",
-            }}
-            onMouseEnter={(e) => (e.currentTarget.style.opacity = "0.7")}
-            onMouseLeave={(e) => (e.currentTarget.style.opacity = "1")}
-          >
-            email me
-          </a>{" "}
-          to see how can we collaborate
+          have a project in mind?
         </motion.h2>
 
         {/* CTA button */}
         <motion.a
-          href="mailto:hello@codefi.dev"
+          href="#"
           initial={{ opacity: 0, y: 20 }}
           animate={inView ? { opacity: 1, y: 0 } : {}}
-          transition={{ duration: 0.5, delay: 0.3 }}
+          transition={{ duration: 0.5, delay: 0.2 }}
           className="inline-flex items-center justify-center mt-10"
           style={{
-            fontFamily: "var(--font-heading)",
+            fontFamily: "var(--font-body)",
             fontSize: "16px",
             fontWeight: 400,
             height: "52px",
             padding: "16px 36px",
-            border: "1px solid rgba(255,255,255,0.5)",
-            borderRadius: "0",
+            border: "1px solid #00FF77",
+            borderRadius: "4px",
             backgroundColor: "transparent",
-            color: "#ffffff",
+            color: "#00FF77",
             textDecoration: "none",
-            letterSpacing: "-0.4px",
+            letterSpacing: "0px",
             transition: "all 0.3s",
           }}
           onMouseEnter={(e) => {
-            e.currentTarget.style.backgroundColor = "#ffffff";
+            e.currentTarget.style.backgroundColor = "#00FF77";
             e.currentTarget.style.color = "#000000";
           }}
           onMouseLeave={(e) => {
             e.currentTarget.style.backgroundColor = "transparent";
-            e.currentTarget.style.color = "#ffffff";
+            e.currentTarget.style.color = "#00FF77";
           }}
         >
-          contact me
+          book an appointment
         </motion.a>
       </div>
     </section>

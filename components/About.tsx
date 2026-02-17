@@ -7,79 +7,116 @@ export default function About() {
   const { ref, inView } = useInView({ threshold: 0.2, triggerOnce: true });
 
   return (
-    <section id="about" className="py-20 md:py-32">
+    <section id="about" className="py-10 md:py-16">
       <div ref={ref} className="mx-auto max-w-[1200px] px-6 md:px-10">
         {/* Section label */}
-        <motion.span
+        <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={inView ? { opacity: 1, y: 0 } : {}}
           transition={{ duration: 0.5 }}
-          style={{
-            fontFamily: "var(--font-body)",
-            fontSize: "12px",
-            fontWeight: 300,
-            color: "rgba(255,255,255,0.5)",
-          }}
+          className="border-t border-white/10 pt-6 mb-16"
         >
-          .about
-        </motion.span>
-
-        {/* Quote */}
-        <motion.h2
-          initial={{ opacity: 0, y: 40 }}
-          animate={inView ? { opacity: 1, y: 0 } : {}}
-          transition={{ duration: 0.7, delay: 0.15 }}
-          className="mt-8 max-w-[900px]"
-          style={{
-            fontFamily: "var(--font-heading)",
-            fontSize: "clamp(20px, 3vw, 32px)",
-            fontWeight: 500,
-            lineHeight: 1.5,
-            letterSpacing: "-0.5px",
-            color: "rgba(255,255,255,0.85)",
-          }}
-        >
-          my craft is building experiences that bring value to people and
-          celebrate function over form. let&apos;s hide the ego and give some
-          freedom to creativity and make the first small step changing the world
-          to a better place
-        </motion.h2>
-
-        {/* Link */}
-        <motion.a
-          href="#"
-          initial={{ opacity: 0, y: 20 }}
-          animate={inView ? { opacity: 1, y: 0 } : {}}
-          transition={{ duration: 0.5, delay: 0.3 }}
-          className="inline-flex items-center gap-2 mt-10 group"
-          style={{
-            fontFamily: "var(--font-body)",
-            fontSize: "14px",
-            fontWeight: 400,
-            color: "rgba(255,255,255,0.5)",
-            textDecoration: "none",
-            transition: "color 0.3s",
-          }}
-          onMouseEnter={(e) => (e.currentTarget.style.color = "#ffffff")}
-          onMouseLeave={(e) =>
-            (e.currentTarget.style.color = "rgba(255,255,255,0.5)")
-          }
-        >
-          about me
-          <svg
-            width="14"
-            height="14"
-            viewBox="0 0 24 24"
-            fill="none"
-            stroke="currentColor"
-            strokeWidth="1.5"
-            strokeLinecap="round"
-            strokeLinejoin="round"
+          <span
+            style={{
+              fontFamily: "var(--font-body)",
+              fontSize: "16px",
+              fontWeight: 300,
+              color: "rgba(255,255,255,1)",
+            }}
           >
-            <path d="M7 17L17 7" />
-            <path d="M7 7h10v10" />
-          </svg>
-        </motion.a>
+            about us
+          </span>
+        </motion.div>
+
+        {/* Content: text left, video right */}
+        <div className="flex flex-col md:flex-row gap-12 md:gap-16 items-stretch">
+          {/* Left text */}
+          <div className="flex-1">
+            <motion.p
+              initial={{ opacity: 0, y: 40 }}
+              animate={inView ? { opacity: 1, y: 0 } : {}}
+              transition={{ duration: 0.7, delay: 0.15 }}
+              style={{
+                fontFamily: "var(--font-body)",
+                fontSize: "16px",
+                fontWeight: 300,
+                lineHeight: 1.2,
+                color: "rgba(255,255,255,1)",
+              }}
+            >
+              Founded in the heart of Canada&apos;s tech ecosystem, CODEFI is a
+              high-end engineering studio where sophisticated software meets the
+              decentralized future. We don&apos;t just build applications; we
+              architect intelligent ecosystems. By fusing the immutable security
+              of Web3 with the autonomous power of AI, we empower enterprises
+              and startups to transition from legacy systems to the forefront of
+              the digital economy. At CODEFI, we code with precision, design
+              with intent, and build for scale.
+            </motion.p>
+
+            {/* Read more link */}
+            <motion.a
+              href="#"
+              initial={{ opacity: 0, y: 20 }}
+              animate={inView ? { opacity: 1, y: 0 } : {}}
+              transition={{ duration: 0.5, delay: 0.3 }}
+              className="inline-block mt-8"
+              style={{
+                fontFamily: "var(--font-body)",
+                fontSize: "14px",
+                fontWeight: 400,
+                color: "rgba(255,255,255,1)",
+                textDecoration: "underline",
+                textUnderlineOffset: "4px",
+                transition: "color 0.3s",
+              }}
+              onMouseEnter={(e) => (e.currentTarget.style.color = "#ffffff")}
+              onMouseLeave={(e) =>
+                (e.currentTarget.style.color = "rgba(255,255,255,0.5)")
+              }
+            >
+              read more
+            </motion.a>
+          </div>
+
+          {/* Right video placeholder */}
+          <motion.div
+            initial={{ opacity: 0, y: 40 }}
+            animate={inView ? { opacity: 1, y: 0 } : {}}
+            transition={{ duration: 0.7, delay: 0.25 }}
+            className="flex-1 w-full"
+          >
+            <div
+              className="w-full h-full rounded-lg flex items-center justify-center relative"
+              style={{
+                backgroundColor: "rgba(255,255,255,0.05)",
+                border: "1px solid rgba(255,255,255,0.08)",
+              }}
+            >
+              {/* Play button — Nitro style */}
+              <div className="relative cursor-pointer group/play">
+                {/* Outer ring */}
+                <div
+                  className="w-20 h-20 rounded-full flex items-center justify-center transition-all duration-300 group-hover/play:scale-110"
+                  style={{
+                    border: "1.5px solid rgba(255,255,255,0.25)",
+                    backgroundColor: "rgba(255,255,255,0.04)",
+                  }}
+                >
+                  <svg
+                    width="28"
+                    height="28"
+                    viewBox="0 0 24 24"
+                    fill="rgba(255,255,255,0.8)"
+                    className="ml-1"
+                  >
+                    <path d="M8 5v14l11-7z" />
+                  </svg>
+                </div>
+              </div>
+            </div>
+          </motion.div>
+        </div>
       </div>
     </section>
   );

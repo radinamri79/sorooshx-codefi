@@ -3,8 +3,9 @@
 import Header from "@/components/Header";
 import Hero from "@/components/Hero";
 import Projects from "@/components/Projects";
+import Services from "@/components/Services";
 import About from "@/components/About";
-import Notes from "@/components/Notes";
+import FAQ from "@/components/FAQ";
 import CTA from "@/components/CTA";
 import Footer from "@/components/Footer";
 
@@ -15,8 +16,9 @@ export default function Home() {
       <main>
         <Hero />
         <Projects />
+        <Services />
         <About />
-        <Notes />
+        <FAQ />
         <CTA />
       </main>
       <Footer />
