@@ -3,34 +3,24 @@
 import { useRef } from "react";
 import Link from "next/link";
 import { motion, useScroll, useTransform, type MotionValue } from "framer-motion";
-import { allProjects, type Project } from "@/data/projects";
+import { type Project } from "@/data/projects";
 
 const STICKY_TOP = 90;
-const CARD_COUNT = allProjects.length;
 
-/* ─── Individual stacked card ─── */
-function StackedCard({
+/* ─── Individual stacked card (same as home Projects) ─── */
+function GalleryStackedCard({
   project,
   index,
+  cardCount,
   scrollYProgress,
 }: {
   project: Project;
   index: number;
+  cardCount: number;
   scrollYProgress: MotionValue<number>;
 }) {
-  /*
-   * Scroll-linked slide animation:
-   *  - Card 0: always visible, no slide
-   *  - Card i (i≥1): slides up from below (translateY 100% → 0%)
-   *
-   * The section scroll is divided so each card gets a "reading" phase
-   * and a "slide-in" phase for the next card:
-   *   Card 1 slides in during scrollYProgress [0.167 → 0.333]
-   *   Card 2 slides in during scrollYProgress [0.500 → 0.667]
-   *   Card 3 slides in during scrollYProgress [0.833 → 1.000]
-   */
-  const sectionStart = index === 0 ? 0 : (index - 1) / (CARD_COUNT - 1);
-  const sectionEnd = index === 0 ? 0 : index / (CARD_COUNT - 1);
+  const sectionStart = index === 0 ? 0 : (index - 1) / (cardCount - 1);
+  const sectionEnd = index === 0 ? 0 : index / (cardCount - 1);
   const animStart = index === 0 ? 0 : (sectionStart + sectionEnd) / 2;
   const animEnd = index === 0 ? 0 : sectionEnd;
 
@@ -40,25 +30,19 @@ function StackedCard({
     index === 0 ? ["0%", "0%"] : ["100%", "0%"]
   );
 
-  /*
-   * Scale-down effect: when the NEXT card slides in, the current card
-   * scales down slightly (1 → 0.95) creating a depth/parallax feel.
-   * The last card never scales down.
-   */
   const nextAnimStart =
-    index < CARD_COUNT - 1
-      ? ((index + index + 1) / (CARD_COUNT - 1)) / 2 // midpoint of next card's section
+    index < cardCount - 1
+      ? ((index + index + 1) / (cardCount - 1)) / 2
       : 1;
   const nextAnimEnd =
-    index < CARD_COUNT - 1 ? (index + 1) / (CARD_COUNT - 1) : 1;
+    index < cardCount - 1 ? (index + 1) / (cardCount - 1) : 1;
 
   const scale = useTransform(
     scrollYProgress,
-    index < CARD_COUNT - 1 ? [nextAnimStart, nextAnimEnd] : [0, 1],
-    index < CARD_COUNT - 1 ? [1, 0.95] : [1, 1]
+    index < cardCount - 1 ? [nextAnimStart, nextAnimEnd] : [0, 1],
+    index < cardCount - 1 ? [1, 0.95] : [1, 1]
   );
 
-  /* Arrow rotation: rotates from → to ↗ during the card's reading phase */
   const arrowStart = index === 0 ? 0 : animEnd;
   const arrowEnd = index === 0 ? 0.08 : Math.min(animEnd + 0.08, 1);
   const arrowRotate = useTransform(scrollYProgress, [arrowStart, arrowEnd], [0, -45]);
@@ -77,7 +61,7 @@ function StackedCard({
           className="h-full p-6 sm:p-8 md:p-10 lg:p-12 flex flex-col"
           style={{ backgroundColor: project.mainBg }}
         >
-          {/* Meta row: year + category */}
+          {/* Meta row */}
           <div
             className="flex items-center justify-between pb-4 sm:pb-5"
             style={{ borderBottom: `1px solid ${borderColor}` }}
@@ -104,7 +88,6 @@ function StackedCard({
             >
               {project.title}
             </h3>
-
             <motion.div className="shrink-0 ml-4" style={{ rotate: arrowRotate }}>
               <svg
                 className="w-10 h-10 sm:w-11 sm:h-11 md:w-12 md:h-12"
@@ -122,7 +105,7 @@ function StackedCard({
             </motion.div>
           </div>
 
-          {/* Image area — fills remaining space */}
+          {/* Image area */}
           <div
             className="flex-1 w-full rounded-lg sm:rounded-xl overflow-hidden flex items-center justify-center"
             style={{ backgroundColor: project.imageBg, minHeight: 0 }}
@@ -148,9 +131,10 @@ function StackedCard({
   );
 }
 
-/* ─── Projects section ─── */
-export default function Projects() {
+/* ─── Gallery section with stacked card scroll ─── */
+export default function ProjectGallery({ projects }: { projects: Project[] }) {
   const sectionRef = useRef<HTMLDivElement>(null);
+  const cardCount = projects.length;
 
   const { scrollYProgress } = useScroll({
     target: sectionRef,
@@ -159,12 +143,10 @@ export default function Projects() {
 
   return (
     <section
-      id="projects"
       ref={sectionRef}
-      style={{ height: `${CARD_COUNT * 100}vh` }}
+      style={{ height: `${cardCount * 100}vh` }}
     >
       <div className="mx-auto max-w-[1200px] px-4 sm:px-6 md:px-10 h-full">
-        {/* Sticky container — stays pinned as user scrolls through the tall section */}
         <div
           style={{
             position: "sticky",
@@ -172,13 +154,13 @@ export default function Projects() {
             height: `calc(100vh - ${STICKY_TOP + 24}px)`,
           }}
         >
-          {/* All cards stacked; overflow-hidden clips cards below the container */}
           <div className="relative w-full h-full overflow-hidden rounded-2xl">
-            {allProjects.map((project, i) => (
-              <StackedCard
-                key={project.title}
+            {projects.map((project, i) => (
+              <GalleryStackedCard
+                key={project.slug}
                 project={project}
                 index={i}
+                cardCount={cardCount}
                 scrollYProgress={scrollYProgress}
               />
             ))}
