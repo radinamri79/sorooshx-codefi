@@ -222,8 +222,8 @@ export default function Projects() {
             height: `calc(100vh - ${STICKY_TOP + 24}px)`,
           }}
         >
-          {/* All cards stacked absolutely; z-index controls layering */}
-          <div className="relative w-full h-full">
+          {/* All cards stacked; overflow-hidden clips cards below the container */}
+          <div className="relative w-full h-full overflow-hidden rounded-2xl">
             {projects.map((project, i) => (
               <StackedCard
                 key={project.title}
