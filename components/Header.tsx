@@ -40,7 +40,7 @@ export default function Header() {
           : "bg-transparent"
       }`}
     >
-      <div className="mx-auto flex h-[83px] max-w-[1200px] items-center justify-between px-6 md:px-10">
+      <div className="mx-auto flex h-[83px] max-w-[1200px] items-center justify-between px-4 sm:px-6 md:px-10">
         {/* Logo */}
         <button
           onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}

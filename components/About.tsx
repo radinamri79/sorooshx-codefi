@@ -8,13 +8,13 @@ export default function About() {
 
   return (
     <section id="about" className="py-10 md:py-16">
-      <div ref={ref} className="mx-auto max-w-[1200px] px-6 md:px-10">
+      <div ref={ref} className="mx-auto max-w-[1200px] px-4 sm:px-6 md:px-10">
         {/* Section label */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={inView ? { opacity: 1, y: 0 } : {}}
           transition={{ duration: 0.5 }}
-          className="border-t border-white/10 pt-6 mb-16"
+          className="border-t border-white/10 pt-6 mb-8 sm:mb-12 md:mb-16"
         >
           <span
             style={{
@@ -29,7 +29,7 @@ export default function About() {
         </motion.div>
 
         {/* Content: text left, video right */}
-        <div className="flex flex-col md:flex-row gap-12 md:gap-16 items-stretch">
+        <div className="flex flex-col md:flex-row gap-8 sm:gap-12 md:gap-16 items-stretch">
           {/* Left text */}
           <div className="flex-1">
             <motion.p

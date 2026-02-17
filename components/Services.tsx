@@ -41,7 +41,7 @@ export default function Services() {
 
   return (
     <section id="services" className="py-10 md:py-16">
-      <div ref={ref} className="mx-auto max-w-[1200px] px-6 md:px-10">
+      <div ref={ref} className="mx-auto max-w-[1200px] px-4 sm:px-6 md:px-10">
         {/* Section title */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
@@ -50,11 +50,9 @@ export default function Services() {
           className="border-t border-white/10 pt-6 mb-12 text-center"
         >
           <span
+            className="text-sm sm:text-base font-light text-white"
             style={{
               fontFamily: "var(--font-body)",
-              fontSize: "16px",
-              fontWeight: 300,
-              color: "rgba(255,255,255,1)",
             }}
           >
             services
@@ -72,29 +70,20 @@ export default function Services() {
                 duration: 0.6,
                 delay: i * 0.08,
               }}
-              className="bg-black p-10 md:p-12 flex flex-col items-center text-center"
+              className="bg-black p-6 sm:p-10 md:p-12 flex flex-col items-center text-center"
             >
               <h3
+                className="text-base sm:text-lg font-medium text-white mb-4 leading-snug"
                 style={{
                   fontFamily: "var(--font-body)",
-                  fontSize: "18px",
-                  fontWeight: 500,
-                  color: "#ffffff",
-                  letterSpacing: "0px",
-                  lineHeight: 1.4,
-                  marginBottom: "16px",
                 }}
               >
                 {service.title}
               </h3>
               <p
+                className="text-sm font-light text-white leading-relaxed max-w-[360px]"
                 style={{
                   fontFamily: "var(--font-body)",
-                  fontSize: "14px",
-                  fontWeight: 300,
-                  color: "rgba(255,255,255,1)",
-                  lineHeight: 1.5,
-                  maxWidth: "360px",
                 }}
               >
                 {service.description}

@@ -43,7 +43,7 @@ export default function FAQ() {
 
   return (
     <section id="faq" className="py-10 md:py-16">
-      <div ref={ref} className="mx-auto max-w-[1200px] px-6 md:px-10">
+      <div ref={ref} className="mx-auto max-w-[1200px] px-4 sm:px-6 md:px-10">
         {/* Section label */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
@@ -78,9 +78,9 @@ export default function FAQ() {
                 className="w-full flex items-center justify-between py-7 md:py-8 border-none bg-transparent cursor-pointer text-left"
               >
                 <span
+                  className="text-sm sm:text-base md:text-lg"
                   style={{
                     fontFamily: "var(--font-body)",
-                    fontSize: "18px",
                     fontWeight: 300,
                     color: "rgba(255,255,255,1)",
                     letterSpacing: "0px",
@@ -93,7 +93,7 @@ export default function FAQ() {
                   className="flex-shrink-0 ml-6 transition-transform duration-300"
                   style={{
                     fontFamily: "var(--font-body)",
-                    fontSize: "32px",
+                    fontSize: "28px",
                     fontWeight: 300,
                     color: "rgba(255,255,255,1)",
                     transform: openIndex === i ? "rotate(45deg)" : "rotate(0deg)",

@@ -17,7 +17,7 @@ export default function Hero() {
 
   return (
     <section className="relative flex items-end pt-[83px] pb-4">
-      <div className="mx-auto w-full max-w-[1200px] px-6 md:px-10 py-12 md:py-20">
+      <div className="mx-auto w-full max-w-[1200px] px-4 sm:px-6 md:px-10 py-10 sm:py-12 md:py-20">
         {/* Main headline */}
         <motion.h1
           initial={{ opacity: 0, y: 30 }}
@@ -25,13 +25,12 @@ export default function Hero() {
           transition={{ duration: 0.8, delay: 0.3 }}
           style={{
             fontFamily: "var(--font-body)",
-            fontSize: "clamp(32px, 5vw, 56px)",
             fontWeight: 400,
             lineHeight: 1.3,
             letterSpacing: "-0.5px",
             color: "#ffffff",
           }}
-          className="max-w-[900px]"
+          className="max-w-[900px] text-[26px] sm:text-[36px] md:text-[48px] lg:text-[56px]"
         >
           a product design
           <br />
@@ -40,8 +39,7 @@ export default function Hero() {
 
         {/* Animated words - orange */}
         <div
-          className="mt-1 overflow-hidden"
-          style={{ height: "clamp(44px, 7vw, 80px)" }}
+          className="mt-1 overflow-hidden h-[36px] sm:h-[50px] md:h-[64px] lg:h-[76px]"
         >
           <AnimatePresence mode="wait">
             <motion.span
@@ -50,9 +48,9 @@ export default function Hero() {
               animate={{ y: 0, opacity: 1 }}
               exit={{ y: -60, opacity: 0 }}
               transition={{ duration: 0.5, ease: "easeInOut" }}
+              className="text-[26px] sm:text-[36px] md:text-[48px] lg:text-[56px]"
               style={{
                 fontFamily: "var(--font-body)",
-                fontSize: "clamp(32px, 5vw, 56px)",
                 fontWeight: 400,
                 lineHeight: 1.3,
                 letterSpacing: "-0.5px",
@@ -71,13 +69,13 @@ export default function Hero() {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6, delay: 0.6 }}
-          className="inline-flex items-center justify-center mt-12"
+          className="inline-flex items-center justify-center mt-8 sm:mt-12"
           style={{
             fontFamily: "var(--font-body)",
-            fontSize: "16px",
+            fontSize: "14px",
             fontWeight: 400,
-            height: "52px",
-            padding: "16px 36px",
+            height: "48px",
+            padding: "14px 28px",
             border: "1px solid rgba(255,255,255,0.5)",
             borderRadius: "4px",
             backgroundColor: "transparent",
