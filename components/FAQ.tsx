@@ -71,7 +71,12 @@ export default function FAQ() {
               initial={{ opacity: 0, y: 20 }}
               animate={inView ? { opacity: 1, y: 0 } : {}}
               transition={{ duration: 0.5, delay: i * 0.06 }}
-              className="border-t border-white/10"
+              style={{
+                borderTop: "1px solid transparent",
+                backgroundImage: "linear-gradient(#000, #000), linear-gradient(to right, transparent, rgba(255,255,255,0.1) 25%, rgba(255,255,255,0.1) 75%, transparent)",
+                backgroundOrigin: "border-box",
+                backgroundClip: "padding-box, border-box",
+              }}
             >
               <button
                 onClick={() => setOpenIndex(openIndex === i ? null : i)}

@@ -16,19 +16,25 @@ export function generateStaticParams() {
 function SectionDivider({ label }: { label: string }) {
   return (
     <div className="pt-14 sm:pt-20 pb-8 sm:pb-12">
-      <hr
-        className="border-0 mb-4"
-        style={{ height: "1px", backgroundColor: "rgba(255,255,255,0.1)" }}
-      />
-      <p
-        className="text-center text-sm sm:text-base"
-        style={{
-          fontFamily: "var(--font-body)",
-          color: "rgba(255,255,255,0.45)",
-        }}
-      >
-        {label}
-      </p>
+      <div className="relative flex items-center justify-center">
+        <span
+          className="absolute inset-x-0 h-[1px]"
+          style={{
+            background:
+              "linear-gradient(to right, transparent, rgba(255,255,255,0.15) 20%, rgba(255,255,255,0.15) 80%, transparent)",
+          }}
+        />
+        <span
+          className="relative z-10 px-4 text-sm sm:text-base"
+          style={{
+            fontFamily: "var(--font-body)",
+            color: "rgba(255,255,255,0.45)",
+            backgroundColor: "#000",
+          }}
+        >
+          {label}
+        </span>
+      </div>
     </div>
   );
 }
@@ -256,33 +262,68 @@ export default async function ProjectDetailPage({
         </div>
       </section>
 
-      {/* ─── Stack (no borders) ─── */}
+      {/* ─── Stack (gradient borders) ─── */}
       <section className="mx-auto max-w-[1200px] px-4 sm:px-6 md:px-10">
         <SectionDivider label="stack" />
         <div className="grid grid-cols-1 sm:grid-cols-2 max-w-[800px] mx-auto pb-4">
-          {project.stack.map((s) => (
-            <div key={s.title} className="p-6 sm:p-8 text-center">
-              <h4
-                className="text-base sm:text-lg font-semibold mb-3"
-                style={{
-                  fontFamily: "var(--font-heading)",
-                  color: "rgba(255,255,255,0.9)",
-                }}
-              >
-                {s.title}
-              </h4>
-              <p
-                className="text-xs sm:text-sm"
-                style={{
-                  fontFamily: "var(--font-body)",
-                  color: "rgba(255,255,255,0.45)",
-                  lineHeight: "1.8",
-                }}
-              >
-                {s.description}
-              </p>
-            </div>
-          ))}
+          {project.stack.map((s, i) => {
+            const row = Math.floor(i / 2);
+            const col = i % 2;
+            const totalRows = Math.ceil(project.stack.length / 2);
+            return (
+              <div key={s.title} className="relative p-6 sm:p-8 text-center">
+                {/* Top border */}
+                {row > 0 && (
+                  <span
+                    className="absolute top-0 left-0 right-0 h-[1px]"
+                    style={{
+                      background:
+                        "linear-gradient(to right, transparent, rgba(255,255,255,0.12) 20%, rgba(255,255,255,0.12) 80%, transparent)",
+                    }}
+                  />
+                )}
+                {/* Right border — left column only on sm+ */}
+                {col === 0 && (
+                  <span
+                    className="hidden sm:block absolute top-0 bottom-0 right-0 w-[1px]"
+                    style={{
+                      background:
+                        "linear-gradient(to bottom, transparent, rgba(255,255,255,0.12) 20%, rgba(255,255,255,0.12) 80%, transparent)",
+                    }}
+                  />
+                )}
+                {/* Bottom border for last row */}
+                {row === totalRows - 1 && (
+                  <span
+                    className="absolute bottom-0 left-0 right-0 h-[1px]"
+                    style={{
+                      background:
+                        "linear-gradient(to right, transparent, rgba(255,255,255,0.12) 20%, rgba(255,255,255,0.12) 80%, transparent)",
+                    }}
+                  />
+                )}
+                <h4
+                  className="text-base sm:text-lg font-semibold mb-3"
+                  style={{
+                    fontFamily: "var(--font-heading)",
+                    color: "rgba(255,255,255,0.9)",
+                  }}
+                >
+                  {s.title}
+                </h4>
+                <p
+                  className="text-xs sm:text-sm"
+                  style={{
+                    fontFamily: "var(--font-body)",
+                    color: "rgba(255,255,255,0.45)",
+                    lineHeight: "1.8",
+                  }}
+                >
+                  {s.description}
+                </p>
+              </div>
+            );
+          })}
         </div>
       </section>
 

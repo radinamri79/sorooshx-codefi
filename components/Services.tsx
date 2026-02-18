@@ -47,7 +47,13 @@ export default function Services() {
           initial={{ opacity: 0, y: 20 }}
           animate={inView ? { opacity: 1, y: 0 } : {}}
           transition={{ duration: 0.5 }}
-          className="border-t border-white/10 pt-6 mb-12 text-center"
+          className="pt-6 mb-12 text-center"
+          style={{
+            borderTop: "1px solid transparent",
+            backgroundImage: "linear-gradient(#000, #000), linear-gradient(to right, transparent, rgba(255,255,255,0.1) 25%, rgba(255,255,255,0.1) 75%, transparent)",
+            backgroundOrigin: "border-box",
+            backgroundClip: "padding-box, border-box",
+          }}
         >
           <span
             className="text-sm sm:text-base font-light text-white"
@@ -59,37 +65,72 @@ export default function Services() {
           </span>
         </motion.div>
 
-        {/* 2x3 grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-[1px] bg-white/10">
-          {services.map((service, i) => (
-            <motion.div
-              key={service.title}
-              initial={{ opacity: 0, y: 30 }}
-              animate={inView ? { opacity: 1, y: 0 } : {}}
-              transition={{
-                duration: 0.6,
-                delay: i * 0.08,
-              }}
-              className="bg-black p-6 sm:p-10 md:p-12 flex flex-col items-center text-center"
-            >
-              <h3
-                className="text-base sm:text-lg font-medium text-white mb-4 leading-snug"
-                style={{
-                  fontFamily: "var(--font-body)",
+        {/* 2x3 grid with gradient borders */}
+        <div className="grid grid-cols-1 md:grid-cols-2">
+          {services.map((service, i) => {
+            const row = Math.floor(i / 2);
+            const col = i % 2;
+            const totalRows = Math.ceil(services.length / 2);
+            return (
+              <motion.div
+                key={service.title}
+                initial={{ opacity: 0, y: 30 }}
+                animate={inView ? { opacity: 1, y: 0 } : {}}
+                transition={{
+                  duration: 0.6,
+                  delay: i * 0.08,
                 }}
+                className="relative p-6 sm:p-10 md:p-12 flex flex-col items-center text-center"
               >
-                {service.title}
-              </h3>
-              <p
-                className="text-sm font-light text-white leading-relaxed max-w-[360px]"
-                style={{
-                  fontFamily: "var(--font-body)",
-                }}
-              >
-                {service.description}
-              </p>
-            </motion.div>
-          ))}
+                {/* Top border (gradient faded) */}
+                {row > 0 && (
+                  <span
+                    className="absolute top-0 left-0 right-0 h-[1px]"
+                    style={{
+                      background:
+                        "linear-gradient(to right, transparent, rgba(255,255,255,0.12) 20%, rgba(255,255,255,0.12) 80%, transparent)",
+                    }}
+                  />
+                )}
+                {/* Right border (gradient faded) — only left column on md+ */}
+                {col === 0 && (
+                  <span
+                    className="hidden md:block absolute top-0 bottom-0 right-0 w-[1px]"
+                    style={{
+                      background:
+                        "linear-gradient(to bottom, transparent, rgba(255,255,255,0.12) 20%, rgba(255,255,255,0.12) 80%, transparent)",
+                    }}
+                  />
+                )}
+                {/* Bottom border for last row (gradient faded) */}
+                {row === totalRows - 1 && (
+                  <span
+                    className="absolute bottom-0 left-0 right-0 h-[1px]"
+                    style={{
+                      background:
+                        "linear-gradient(to right, transparent, rgba(255,255,255,0.12) 20%, rgba(255,255,255,0.12) 80%, transparent)",
+                    }}
+                  />
+                )}
+                <h3
+                  className="text-base sm:text-lg font-medium text-white mb-4 leading-snug"
+                  style={{
+                    fontFamily: "var(--font-body)",
+                  }}
+                >
+                  {service.title}
+                </h3>
+                <p
+                  className="text-sm font-light text-white leading-relaxed max-w-[360px]"
+                  style={{
+                    fontFamily: "var(--font-body)",
+                  }}
+                >
+                  {service.description}
+                </p>
+              </motion.div>
+            );
+          })}
         </div>
       </div>
     </section>

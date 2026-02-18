@@ -13,7 +13,15 @@ const socialLinks = [
 
 export default function Footer() {
   return (
-    <footer className="border-t border-white/10 py-8 md:py-10">
+    <footer
+      className="py-8 md:py-10"
+      style={{
+        borderTop: "1px solid transparent",
+        backgroundImage: "linear-gradient(#000, #000), linear-gradient(to right, transparent, rgba(255,255,255,0.1) 25%, rgba(255,255,255,0.1) 75%, transparent)",
+        backgroundOrigin: "border-box",
+        backgroundClip: "padding-box, border-box",
+      }}
+    >
       <div className="mx-auto max-w-[1200px] px-4 sm:px-6 md:px-10">
         <div className="flex flex-col gap-6 md:flex-row md:items-center md:justify-between">
           {/* Copyright */}
