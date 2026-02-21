@@ -154,7 +154,7 @@ export default function ProjectGallery({ projects }: { projects: Project[] }) {
       ref={sectionRef}
       style={{ height: `${cardCount * 100}vh` }}
     >
-      <div className="mx-auto max-w-[1200px] 2xl:max-w-[1600px] px-4 sm:px-6 md:px-10 h-full">
+      <div className="mx-auto max-w-[1200px] 2xl:max-w-[1600px] px-6 sm:px-6 md:px-10 h-full">
         <div
           style={{
             position: "sticky",

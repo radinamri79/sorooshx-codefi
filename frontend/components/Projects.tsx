@@ -171,7 +171,7 @@ export default function Projects() {
       className="w-full"
       style={{ height: `${CARD_COUNT * 100}vh` }}
     >
-      <div className="mx-auto max-w-[1200px] 2xl:max-w-[1600px] px-4 sm:px-6 md:px-10 h-full">
+      <div className="mx-auto max-w-[1200px] 2xl:max-w-[1600px] px-6 sm:px-6 md:px-10 h-full">
         {/* Sticky container — stays pinned as user scrolls through the tall section */}
         <div
           style={{

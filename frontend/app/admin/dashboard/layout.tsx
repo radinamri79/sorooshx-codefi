@@ -199,7 +199,7 @@ export default function DashboardLayout({
       <div className="flex-1 flex flex-col min-h-screen">
         {/* Top bar */}
         <header
-          className="sticky top-0 z-20 flex items-center h-16 px-4 sm:px-6 lg:px-8"
+          className="sticky top-0 z-20 flex items-center h-16 px-6 sm:px-6 lg:px-8"
           style={{
             background: "rgba(0,0,0,0.8)",
             backdropFilter: "blur(12px)",
