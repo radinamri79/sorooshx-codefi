@@ -67,8 +67,6 @@ npm run dev
 - **Admin panel:** http://localhost:3000/admin
 - **API:** http://localhost:8000/api/
 
-**Admin credentials:** `sorooshx` / `sorooshx`
-
 ## Project Structure
 
 ```
@@ -124,3 +122,33 @@ See [frontend/README.md](frontend/README.md) and [backend/README.md](backend/REA
 ## License
 
 This project is private.
+
+## Deployment
+
+For comprehensive deployment instructions, environment setup, and production configuration, see [DEPLOYMENT.md](DEPLOYMENT.md).
+
+### Production Endpoints
+
+| Service | URL | Notes |
+|---------|-----|-------|
+| Frontend | https://www.codefi.ca | Next.js web application |
+| Backend API | https://backend.codefi.ca | Django REST API |
+| Django Admin | https://backend.codefi.ca/django-admin/ | Admin panel |
+| Frontend Admin | https://www.codefi.ca/admin | Blog management dashboard |
+
+### Quick Deployment Checklist
+
+**Backend:**
+1. Set up `.env` with production database and domain settings
+2. Run migrations: `python manage.py migrate`
+3. Create superuser: `python manage.py create_superuser`
+4. Collect static files: `python manage.py collectstatic --noinput`
+5. Start Gunicorn with Nginx reverse proxy
+
+**Frontend:**
+1. Set up `.env.production.local` with backend API URL
+2. Build project: `npm run build`
+3. Deploy to Vercel or self-hosted server
+
+See [DEPLOYMENT.md](DEPLOYMENT.md) for detailed instructions.
+
