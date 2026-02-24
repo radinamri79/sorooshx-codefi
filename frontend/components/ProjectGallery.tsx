@@ -63,7 +63,7 @@ function GalleryStackedCard({
         >
           {/* Meta row */}
           <div
-            className="flex items-center justify-between px-6 sm:px-8 md:px-10 lg:px-12 pt-6 sm:pt-8 md:pt-10 lg:pt-12 pb-4 sm:pb-5"
+            className="flex items-center justify-between px-6 sm:px-8 md:px-10 lg:px-12 pt-4 sm:pt-5 pb-4 sm:pb-5"
           >
             <span
               className="text-sm sm:text-base font-light tracking-wide"

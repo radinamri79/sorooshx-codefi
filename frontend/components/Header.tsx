@@ -214,34 +214,20 @@ export default function Header() {
         </div>
       </div>
 
-      {/* Mobile menu */}
+      {/* Mobile menu — single full-height fixed overlay so blur covers entire screen */}
       <AnimatePresence>
         {menuOpen && (
           <>
-            {/* Full screen blur overlay - starts below header */}
-            <motion.div
+            {/* Full-height overlay: blur + links, covers viewport below header */}
+            <motion.nav
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
               transition={{ duration: 0.3 }}
-              className="fixed left-0 right-0 z-40 backdrop-blur-xs"
-              style={{
-                top: "83px",
-                bottom: 0,
-                background: "rgba(0,0,0,0.4)",
-              }}
-              onClick={() => setMenuOpen(false)}
-            />
-
-            {/* Menu panel */}
-            <motion.nav
-              initial={{ opacity: 0, height: 0 }}
-              animate={{ opacity: 1, height: "auto" }}
-              exit={{ opacity: 0, height: 0 }}
-              transition={{ duration: 0.3 }}
-              className="md:hidden bg-black/10 backdrop-blur-xs border-b border-white/5 overflow-hidden relative z-50"
+              className="fixed left-0 right-0 top-[83px] bottom-0 z-40 md:hidden bg-black/10 backdrop-blur-xs"
+              onClick={(e) => { if (e.target === e.currentTarget) setMenuOpen(false); }}
             >
-              <div className="flex flex-col gap-6 px-8 py-8 text-right">
+              <div className="flex flex-col gap-6 px-8 pt-8 pb-8 text-right">
                 {navLinks.map((link) =>
                   link.href.startsWith("/#") ? (
                     <button
